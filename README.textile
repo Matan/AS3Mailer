@@ -2,6 +2,10 @@ h2. AS3Mailer
 
 Send emails from Flash using server scripts or a mailto link.
 
+h2. Call out to server developers!
+
+I'd love to see more implementations of the server mailing script. It should be very easy to model any other language implementation from the current php one. Please fork and show us your greatness! :) 
+
 h3. Overview
 
 AS3Mailer provides you with a simple api to format and manage an email. Easily add recipients, from address, subject and email body.
