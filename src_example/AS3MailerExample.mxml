@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="400"
+	minHeight="400" contentCreationComplete="init_handler(event)">
+	<fx:Declarations>
+		<s:RadioButtonGroup id="emailType"/>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.doesflash.mail.AS3Mailer;
+
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+
+			protected var _mailer : AS3Mailer;
+
+			protected function init_handler(event : FlexEvent) : void
+			{
+				_mailer = new AS3Mailer();
+				_mailer.addEventListener(Event.COMPLETE, mailer_complete_handler);
+				_mailer.addEventListener(ErrorEvent.ERROR, mailer_error_handler);
+			}
+
+			protected function send_click_handler(event : MouseEvent) : void
+			{
+				var toStr : String = toTxt.text || "";
+				if(toStr == "")
+				{
+					errLabel.text = "Please enter at least one emails address in the 'To:' field.";
+					return;
+				}
+
+				var ccStr : String = ccTxt.text || "";
+				if(toStr.search(",") > 0 || ccStr.search(",") > 0)
+				{
+					errLabel.text = "Please separate email addresses with a ; (semi-colon).";
+					return;
+				}
+
+				var subjectStr : String = subjectTxt.text || "";
+				if(subjectStr == "")
+				{
+					errLabel.text = "Please enter a subject, tisk-tisk ;-)";
+					return;
+				}
+
+				_mailer.clearRecipients();
+
+				_mailer.scriptURL = (serverCb.selected) ? "http://doesflash.com/wp-content/uploads/AS3Mailer/mail.php" : null;
+				_mailer.type = String(emailType.selectedValue);
+				_mailer.charset = charsetTxt.text;
+				_mailer.messageURL = msgUrlTxt.text;
+
+				if(!loadMsgCb.selected)
+					_mailer.message = msgTxt.text;
+
+				if(ccStr != "")
+				{
+					var ccList : Array = ccStr.split(";");
+					var ccL : int = ccList.length;
+					for(var i : int = 0; i < ccL; i++)
+					{
+						_mailer.addRecipient(ccList[i], null, AS3Mailer.CC);
+					}
+				}
+				if(serverCb.selected)
+					sendBtn.enabled = false;
+					
+				_mailer.send(fromTxt.text, String(toStr.split(";")), subjectStr);
+			}
+
+			protected function mailer_complete_handler(event : Event) : void
+			{
+				sendBtn.enabled = true;
+				Alert.show("Message has been sent!");
+			}
+
+			protected function mailer_error_handler(event : ErrorEvent) : void
+			{
+				sendBtn.enabled = true;
+				Alert.show(event.text);
+			}
+
+			protected function serverCb_change_handler(event : Event) : void
+			{
+				if(!serverCb.selected)
+					plainRb.selected = true;
+				htmlRb.enabled = serverCb.selected;
+			}
+
+			protected function loadMsgCb_change_handler(event : Event) : void
+			{
+				msgTxt.enabled = !loadMsgCb.selected;
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup y="0" width="100%" height="100%" x="0" gap="2">
+		<s:HGroup width="100%">
+			<s:VGroup width="100%">
+				<s:HGroup width="100%" height="50" gap="10"
+					paddingLeft="10" paddingRight="10" paddingTop="10"
+					paddingBottom="10" verticalAlign="middle">
+					<s:Label text="AS3Mailer!" fontSize="24"/>
+					<s:Label text="Send emails from Flash using server or mailto link!"
+						fontSize="10"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="30" gap="10"
+					paddingLeft="10" paddingRight="10" paddingTop="10"
+					paddingBottom="10" verticalAlign="middle">
+					<s:Label text="From:" width="50"/>
+					<s:TextInput width="100%" text="Does Flash? &lt;no-reply@doesflash.com&gt;"
+						enabled="false" id="fromTxt"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="30" gap="10"
+					paddingLeft="10" paddingRight="10" paddingTop="10"
+					paddingBottom="10" verticalAlign="middle">
+					<s:Label text="To:" width="50"/>
+					<s:TextInput width="100%" enabled="true" id="toTxt"
+						text="Someone &lt;someone@somewhere.com&gt;; Any Body &lt;anybody@anywhere.com&gt;"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="30" gap="10"
+					paddingLeft="10" paddingRight="10" paddingTop="10"
+					paddingBottom="10" verticalAlign="middle"
+					requestedColumnCount="0">
+					<s:Label text="Cc:" width="50"/>
+					<s:TextInput width="100%" enabled="true" id="ccTxt"
+						text="copyme@thirdwheel.com"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="30" gap="10"
+					paddingLeft="10" paddingRight="10" paddingTop="10"
+					paddingBottom="10" verticalAlign="middle"
+					requestedColumnCount="0">
+					<s:Label text="Subject:" width="50"/>
+					<s:TextInput width="100%" enabled="true" id="subjectTxt"
+						text="Test Message From DoesFlash.com"/>
+				</s:HGroup>
+			</s:VGroup>
+			<s:VGroup width="200" height="100%" paddingLeft="10"
+				paddingTop="10" paddingRight="10">
+				<s:Label text="Options:" fontSize="18"/>
+				<s:CheckBox label="Use Server" selected="true"
+					enabled="true" id="serverCb" change="serverCb_change_handler(event)"/>
+				<s:HGroup>
+					<s:RadioButton label="text/html" groupName="emailType"
+						selected="true" id="htmlRb"/>
+					<s:RadioButton label="text/plain" groupName="emailType"
+						id="plainRb"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="Charset:"/>
+					<s:TextInput width="100%" enabled="true" id="charsetTxt"
+						text="utf-8"/>
+				</s:HGroup>
+				<s:CheckBox label="Load message from URL" selected="false"
+					enabled="true" id="loadMsgCb" change="loadMsgCb_change_handler(event)"/>
+				<s:TextInput width="100%" id="msgUrlTxt" text="http://doesflash.com/wp-content/uploads/AS3Mailer/static-mail-example.html"/>
+			</s:VGroup>
+		</s:HGroup>
+		<s:Label text="Message:" paddingLeft="10" paddingTop="10"
+			fontSize="12"/>
+		<s:TextArea width="100%" height="100%" editable="true"
+			enabled="true" id="msgTxt" text="Enter your message here or paste in some html code.&#xd;&#xd;You can also load a message from a web address, just tick the &quot;Load message from URL&quot; checkbox and enter your own link, or leave the link as is to see the predefined message."/>
+		<s:HGroup paddingLeft="2" paddingTop="2" paddingRight="2"
+			paddingBottom="2" verticalAlign="middle" width="100%"
+			horizontalAlign="right">
+			<s:Label color="#FF0000" id="errLabel"/>
+			<s:Button label="Send!" enabled="true" id="sendBtn" click="send_click_handler(event)"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Application>

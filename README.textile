@@ -1,0 +1,46 @@
+h2. AS3Mailer
+
+Send emails from Flash using server scripts or a mailto link.
+
+h3. Overview
+
+AS3Mailer provides you with a simple api to format and manage an email. Easily add recipients, from address, subject and email body.
+
+h3. Some Features
+
+Please check out the "AS3Mailer - Send email from Flash":http://doesflash.com for a working example.
+
+* Easy api.
+* Use any server script.
+* Fall back mailto link creation.
+* Load external email body.
+
+h3. Quick Examples:
+
+<pre>
+var mailer : AS3Mailer = new AS3Mailer("http://doesflash.com/wp-content/uploads/AS3Mailer/mail.php");
+mailer.setFrom("no-reply@doesflash.com", "Does Flash?");
+mailer.addRecipient("some@dude.com", "Some Dude");
+mailer.addRecipient("other@dude.com", "Other Dude", AS3Mailer.CC);
+mailer.subject = "Test Mail using AS3Mailer";
+mailer.messageURL = "http://doesflash.com/wp-content/uploads/AS3Mailer/static-mail-example.html?";
+mailer.send();
+</pre>
+<pre>
+var mailer : AS3Mailer = new AS3Mailer("http://doesflash.com/wp-content/uploads/AS3Mailer/mail.php");
+mailer.send("from@somewhere.com", "to@somewhere.com", "Dear Mr. To", "Hello Mr. To, how are you?");
+</pre>
+<pre>
+var mailer : AS3Mailer = new AS3Mailer();
+mailer.send("from@somewhere.com", "to@somewhere.com", "Dear Mr. To", "Hello Mr. To, how are you?");
+</pre>
+
+h2. License
+
+The MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
