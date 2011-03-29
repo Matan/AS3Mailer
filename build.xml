@@ -90,10 +90,14 @@
 		<mkdir dir="${dist.loc}" />
 		<mkdir dir="${dist.loc}/bin" />
 		<mkdir dir="${dist.loc}/src" />
+		<mkdir dir="${dist.loc}/src_server" />
 		<mkdir dir="${dist.loc}/src_example" />
 		<copy file="${bin.loc}/${project.name.versioned}.swc" todir="${dist.loc}/bin" />
 		<copy todir="${dist.loc}/src">
 			<fileset dir="${main.src.loc}" />
+		</copy>
+		<copy todir="${dist.loc}/src_server">
+			<fileset dir="${server.src.loc}" />
 		</copy>
 		<copy todir="${dist.loc}/src_example">
 			<fileset dir="${sample.src.loc}" />
@@ -121,6 +125,7 @@
 		<delete file="${dist.loc}/LICENSE" />
 		<delete dir="${dist.loc}/bin" />
 		<delete dir="${dist.loc}/src" />
+		<delete dir="${dist.loc}/src_server" />
 		<delete dir="${dist.loc}/src_example" />
 		<delete dir="${dist.loc}/docs" />
 		<echo>[package] Release packaged successfully</echo>
