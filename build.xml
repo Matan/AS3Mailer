@@ -98,6 +98,7 @@
 		<copy todir="${dist.loc}/src_example">
 			<fileset dir="${sample.src.loc}" />
 		</copy>
+		<copy file="${bin.loc}/AS3MailerExample.swf" tofile="${dist.loc}/bin/AS3MailerExample.swf" overwrite="true" />
 		<copy todir="${dist.loc}/docs">
 			<fileset dir="${doc.loc}" />
 		</copy>
