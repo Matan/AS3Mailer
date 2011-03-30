@@ -51,8 +51,7 @@
 				_mailer.charset = charsetTxt.text;
 				_mailer.messageURL = msgUrlTxt.text;
 
-				if(!loadMsgCb.selected)
-					_mailer.message = msgTxt.text;
+				_mailer.message = (loadMsgCb.selected) ? null : msgTxt.text;
 
 				if(ccStr != "")
 				{
@@ -65,7 +64,7 @@
 				}
 				if(serverCb.selected)
 					sendBtn.enabled = false;
-					
+
 				_mailer.send(fromTxt.text, String(toStr.split(";")), subjectStr);
 			}
 
