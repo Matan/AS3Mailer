@@ -52,6 +52,8 @@
 			<arg value="-output=${bin.loc}/${project.name.versioned}.swc" />
 			<!-- We want all the org package classes in the SWC being built. -->
 			<arg value="-include-sources=${main.src.loc}" />
+			<!-- Include classes from SWCs in this folder, but only the ones we use. -->
+			<arg value="-library-path+=${lib.loc}" />
 			<!-- Boolean mosh pit! -->
 			<arg value="-incremental=true" />
 			<arg value="-static-link-runtime-shared-libraries=true" />
@@ -68,6 +70,7 @@
 			<format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour" />
 		</tstamp>
 		<java jar="${FLEX_HOME}/lib/asdoc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+			<arg line="-external-library-path ${lib.loc}" />
 			<arg line="-source-path ${main.src.loc}" />
 			<arg line="-doc-sources ${main.src.loc}" />
 			<arg line="-output ${doc.loc}" />
@@ -89,12 +92,16 @@
 		<echo>[package] Packaging Release</echo>
 		<mkdir dir="${dist.loc}" />
 		<mkdir dir="${dist.loc}/bin" />
+		<mkdir dir="${dist.loc}/libs" />
 		<mkdir dir="${dist.loc}/src" />
 		<mkdir dir="${dist.loc}/src_server" />
 		<mkdir dir="${dist.loc}/src_example" />
 		<copy file="${bin.loc}/${project.name.versioned}.swc" todir="${dist.loc}/bin" />
 		<copy todir="${dist.loc}/src">
 			<fileset dir="${main.src.loc}" />
+		</copy>
+		<copy todir="${dist.loc}/libs">
+			<fileset dir="${lib.loc}" />
 		</copy>
 		<copy todir="${dist.loc}/src_server">
 			<fileset dir="${server.src.loc}" />
@@ -124,6 +131,7 @@
 		<delete file="${dist.loc}/${project.name.versioned}.swc" />
 		<delete file="${dist.loc}/LICENSE" />
 		<delete dir="${dist.loc}/bin" />
+		<delete dir="${dist.loc}/libs" />
 		<delete dir="${dist.loc}/src" />
 		<delete dir="${dist.loc}/src_server" />
 		<delete dir="${dist.loc}/src_example" />

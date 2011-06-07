@@ -3,9 +3,12 @@
 /html-template/*
 /bin-debug/*
 /bin-release/*
+/bin/.htaccess
 /bin/*.swc
 /bin/*.cache
 /bin/.*
+/src_server/.htaccess
+/src_test/*
 dist/*
 docs/*
 obj/*

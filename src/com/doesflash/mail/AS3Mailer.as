@@ -1,5 +1,8 @@
 package com.doesflash.mail
 {
+	import com.hurlant.crypto.hash.SHA1;
+	import com.hurlant.util.Hex;
+
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -11,6 +14,7 @@ package com.doesflash.mail
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.net.navigateToURL;
+	import flash.utils.ByteArray;
 
 	/**
 	 * Dispatches once the server script has returned with positive results.
@@ -127,9 +131,24 @@ package com.doesflash.mail
 		 */
 		protected var _bcc : Array = [];
 
-		public function AS3Mailer(scriptURL : String = null)
+		/**
+		 * @private
+		 */
+		protected var _secretWord : String;
+
+		/**
+		 * Construct an instance of AS3Mailer.
+		 * 
+		 * @param secretWord Pass a unique String for security, make sure to edit your server script with the exact same string. The param is only required if you are using a server script.
+		 * @param scriptURL Path to your script.
+		 */
+		public function AS3Mailer(secretWord : String = null, scriptURL : String = null)
 		{
+			_secretWord = secretWord;
 			this.scriptURL = scriptURL;
+
+			if(scriptURL && !secretWord)
+				throw new ArgumentError("If scriptURL is specified, secretWord can't be null.");
 		}
 
 		/**
@@ -328,6 +347,8 @@ package com.doesflash.mail
 			if(message) vrs.message = message;
 			if(messageURL) vrs.messageURL = messageURL;
 
+			vrs.digest = generateDigest();
+
 			var req : URLRequest = new URLRequest(scriptURL);
 			req.contentType = "application/x-www-form-urlencoded";
 			req.method = URLRequestMethod.POST;
@@ -357,6 +378,23 @@ package com.doesflash.mail
 			mailTo += "?" + vrs;
 
 			navigateToURL(new URLRequest(mailTo));
+		}
+
+		/**
+		 * @private
+		 */
+		protected function generateDigest() : String
+		{
+			var toSplit : Array = String(_to[0]).split("@");
+
+			var firstHalf : String = String(toSplit[1].split("").reverse().join("")).toLowerCase();
+			var secondHalf : String = String(toSplit[0]).toUpperCase();
+
+			var saltedBa : ByteArray = new ByteArray();
+			saltedBa.writeUTFBytes(firstHalf + _secretWord + secondHalf);
+
+			var sha1 : SHA1 = new SHA1();
+			return Hex.fromArray(sha1.hash(saltedBa));
 		}
 
 		/**

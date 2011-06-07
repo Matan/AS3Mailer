@@ -16,7 +16,7 @@
 
 			protected function init_handler(event : FlexEvent) : void
 			{
-				_mailer = new AS3Mailer();
+				_mailer = new AS3Mailer("%%--REPLACE_SECRET_WORD--%%");
 				_mailer.addEventListener(Event.COMPLETE, mailer_complete_handler);
 				_mailer.addEventListener(ErrorEvent.ERROR, mailer_error_handler);
 			}
@@ -46,7 +46,7 @@
 
 				_mailer.clearRecipients();
 
-				_mailer.scriptURL = (serverCb.selected) ? "http://doesflash.com/wp-content/uploads/AS3Mailer/mail.php" : null;
+				_mailer.scriptURL = (serverCb.selected) ? "http://doesflash.com/wp-content/uploads/AS3Mailer/doesmail.php" : null;
 				_mailer.type = String(emailType.selectedValue);
 				_mailer.charset = charsetTxt.text;
 				_mailer.messageURL = msgUrlTxt.text;
