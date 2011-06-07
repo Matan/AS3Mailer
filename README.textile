@@ -12,7 +12,7 @@ AS3Mailer provides you with a simple api to format and manage an email. Easily a
 
 h3. Some Features
 
-Please check out the "AS3Mailer - Send email from Flash":http://doesflash.com for a working example.
+Please check out the "AS3Mailer - Send email from Flash":http://doesflash.com/2011/06/as3mailer-send…ail-from-flash/ for a working example.
 
 * Easy api.
 * Use any server script.
@@ -22,16 +22,16 @@ Please check out the "AS3Mailer - Send email from Flash":http://doesflash.com fo
 h3. Quick Examples:
 
 <pre>
-var mailer : AS3Mailer = new AS3Mailer("http://doesflash.com/wp-content/uploads/AS3Mailer/mail.php");
+var mailer : AS3Mailer = new AS3Mailer("SECRET_WORD", "http://somedomain.com/mail.php");
 mailer.setFrom("no-reply@doesflash.com", "Does Flash?");
 mailer.addRecipient("some@dude.com", "Some Dude");
 mailer.addRecipient("other@dude.com", "Other Dude", AS3Mailer.CC);
 mailer.subject = "Test Mail using AS3Mailer";
-mailer.messageURL = "http://doesflash.com/wp-content/uploads/AS3Mailer/static-mail-example.html?";
+mailer.messageURL = "http://somedomain.com/static-mail-example.html?";
 mailer.send();
 </pre>
 <pre>
-var mailer : AS3Mailer = new AS3Mailer("http://doesflash.com/wp-content/uploads/AS3Mailer/mail.php");
+var mailer : AS3Mailer = new AS3Mailer("SECRET_WORD", "http://somedomain.com/mail.php");
 mailer.send("from@somewhere.com", "to@somewhere.com", "Dear Mr. To", "Hello Mr. To, how are you?");
 </pre>
 <pre>
