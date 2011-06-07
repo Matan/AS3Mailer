@@ -12,7 +12,7 @@ AS3Mailer provides you with a simple api to format and manage an email. Easily a
 
 h3. Some Features
 
-Please check out the "AS3Mailer - Send email from Flash":http://doesflash.com/2011/06/as3mailer-send…ail-from-flash/ for a working example.
+Please check out the "AS3Mailer - Send email from Flash":http://doesflash.com/2011/06/as3mailer-send-email-from-flash/ for a working example.
 
 * Easy api.
 * Use any server script.
