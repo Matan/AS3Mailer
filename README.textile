@@ -39,6 +39,10 @@ var mailer : AS3Mailer = new AS3Mailer();
 mailer.send("from@somewhere.com", "to@somewhere.com", "Dear Mr. To", "Hello Mr. To, how are you?");
 </pre>
 
+h3. Dependencies
+
+* "AS3Crypto":http://code.google.com/p/as3crypto/
+
 h2. License
 
 The MIT License
