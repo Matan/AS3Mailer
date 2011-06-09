@@ -49,7 +49,6 @@
 				_mailer.scriptURL = (serverCb.selected) ? "http://doesflash.com/wp-content/uploads/AS3Mailer/doesmail.php" : null;
 				_mailer.type = String(emailType.selectedValue);
 				_mailer.charset = charsetTxt.text;
-				_mailer.messageURL = msgUrlTxt.text;
 
 				_mailer.message = (loadMsgCb.selected) ? null : msgTxt.text;
 
@@ -65,7 +64,7 @@
 				if(serverCb.selected)
 					sendBtn.enabled = false;
 
-				_mailer.send(fromTxt.text, String(toStr.split(";")), subjectStr);
+				_mailer.send(null, String(toStr.split(";")), subjectStr);
 			}
 
 			protected function mailer_complete_handler(event : Event) : void
@@ -85,6 +84,8 @@
 				if(!serverCb.selected)
 					plainRb.selected = true;
 				htmlRb.enabled = serverCb.selected;
+				msgTxt.enabled = !serverCb.selected;
+				loadMsgCb.selected = serverCb.selected;
 			}
 
 			protected function loadMsgCb_change_handler(event : Event) : void
@@ -150,15 +151,14 @@
 					<s:TextInput width="100%" enabled="true" id="charsetTxt"
 						text="utf-8"/>
 				</s:HGroup>
-				<s:CheckBox label="Load message from URL" selected="false"
-					enabled="true" id="loadMsgCb" change="loadMsgCb_change_handler(event)"/>
-				<s:TextInput width="100%" id="msgUrlTxt" text="http://doesflash.com/wp-content/uploads/AS3Mailer/static-mail-example.html"/>
+				<s:CheckBox label="Load message from URL" selected="true"
+					enabled="false" id="loadMsgCb" change="loadMsgCb_change_handler(event)"/>
 			</s:VGroup>
 		</s:HGroup>
 		<s:Label text="Message:" paddingLeft="10" paddingTop="10"
 			fontSize="12"/>
 		<s:TextArea width="100%" height="100%" editable="true"
-			enabled="true" id="msgTxt" text="Enter your message here or paste in some html code.&#xd;&#xd;You can also load a message from a web address, just tick the &quot;Load message from URL&quot; checkbox and enter your own link, or leave the link as is to see the predefined message."/>
+			enabled="false" id="msgTxt" text="Enter your message here.&#xd;&#xd;You can also load a message from a web address, but a message has been predefined while using the server."/>
 		<s:HGroup paddingLeft="2" paddingTop="2" paddingRight="2"
 			paddingBottom="2" verticalAlign="middle" width="100%"
 			horizontalAlign="right">

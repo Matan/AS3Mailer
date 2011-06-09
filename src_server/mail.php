@@ -70,6 +70,7 @@ function securityCheck() {
 /* ------------------------------------------------------------------------------------------------------------------------------------- */
 
 function getValue($key) {
+	global $LOCKED;
     if(isset($LOCKED[$key])) {
         return $LOCKED[$key];
     } else {
@@ -78,11 +79,17 @@ function getValue($key) {
 }
 
 function hasValue($key) {
+	global $LOCKED;
     if(isset($LOCKED[$key])) {
         return true;
     } else {
         return isset($_REQUEST[$key]);
     }
+}
+
+function isLocked($key) {
+	global $LOCKED;
+	return isset($LOCKED[$key]);
 }
 
 if(!isset($_REQUEST['digest']) && hasValue('from') && hasValue('to') && hasValue('subject') && hasValue('mimeVersion') && hasValue('type')) {
@@ -105,7 +112,7 @@ if(getValue('type') == 'text/html' || getValue('type') == 'text/plain') {
         echo 'If mail type set to "text/html", a Charset must be defined.';
         exit();
     }
-    if(hasValue('message')) {
+    if(hasValue('message') && !isLocked('messageURL')) {
         $message = getValue('message');
     } else {
         $message = "";
