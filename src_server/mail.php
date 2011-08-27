@@ -37,11 +37,11 @@ $LOCKED = array();
 //$LOCKED['from'] = "";
 //$LOCKED['to'] = "";
 //$LOCKED['subject'] = "";
-//$LOCKED['type'] = "";
-//$LOCKED['mimeVersion'] = "";
+//$LOCKED['type'] = "text/html";
+//$LOCKED['mimeVersion'] = "1.0";
 //$LOCKED['cc'] = "";
 //$LOCKED['bcc'] = "";
-//$LOCKED['charset'] = "";
+//$LOCKED['charset'] = "utf-8";
 //$LOCKED['message'] = "";
 //$LOCKED['messageURL'] = "";
 
@@ -92,7 +92,7 @@ function isLocked($key) {
 	return isset($LOCKED[$key]);
 }
 
-if(!isset($_REQUEST['digest']) && hasValue('from') && hasValue('to') && hasValue('subject') && hasValue('mimeVersion') && hasValue('type')) {
+if(!isset($_REQUEST['digest']) && !hasValue('from') && !hasValue('to') && !hasValue('subject') && !hasValue('mimeVersion') && !hasValue('type')) {
     echo 'Required variables not set!';
     exit();
 }
